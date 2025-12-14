@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currículo IA - Análise Inteligente</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="main-container">
+        <header>
+            <div class="logo">
+                <i class="fa-solid fa-robot"></i> Currículo<span>IA</span>
+            </div>
+            <p class="subtitle">Assistente de Recrutamento Inteligente</p>
+        </header>
+
+        <main class="card">
+            <div id="upload-section">
+                <div class="card-header">
+                    <h2>Analisar Candidato</h2>
+                    <p>Envie o currículo (PDF ou DOCX) para obter insights instantâneos da IA.</p>
+                </div>
+
+                <form id="upload-form" class="upload-area">
+                    <div class="drag-drop-zone">
+                        <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
+                        <h3 id="upload-text">Arraste e solte o currículo aqui</h3>
+                        <p>ou</p>
+                        <label for="file-upload" class="custom-file-upload">
+                            Escolher Arquivo
+                        </label>
+                        <input id="file-upload" type="file" accept=".pdf,.doc,.docx"/>
+                    </div>
+
+                    <div class="actions">
+                        <button type="submit" class="btn-analyze">
+                            <i class="fa-solid fa-magnifying-glass-chart"></i> Analisar com IA
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="result-section" class="hidden">
+                <div class="card-header">
+                    <h2>Resultado da Análise</h2>
+                </div>
+                <div id="analysis-result" class="result-content">
+                    <!-- O resultado da IA será inserido aqui -->
+                </div>
+                <button id="back-to-upload" class="btn-secondary">Analisar Outro</button>
+            </div>
+
+            <div id="loading-section" class="hidden">
+                <div class="spinner"></div>
+                <p>Analisando o currículo... Isso pode levar alguns segundos.</p>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 Currículo IA. Potencializando o RH.</p>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="/static/js/main.js"></script>
+</body>
+</html>

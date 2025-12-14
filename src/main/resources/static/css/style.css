@@ -1,0 +1,254 @@
+:root {
+    --primary-color: #4a90e2;
+    --secondary-color: #50e3c2;
+    --background-color: #f4f7f6;
+    --text-color: #333;
+    --card-bg: #ffffff;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    --border-radius: 12px;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.main-container {
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+}
+
+header {
+    margin-bottom: 30px;
+}
+
+.logo {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.logo span {
+    color: var(--secondary-color);
+}
+
+.logo i {
+    margin-right: 10px;
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    color: #777;
+    margin-top: -10px;
+}
+
+.card {
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 40px;
+    transition: transform 0.3s ease;
+    min-height: 400px;
+}
+
+.card-header h2 {
+    margin: 0 0 10px 0;
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+.card-header p {
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.upload-area {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.drag-drop-zone {
+    border: 2px dashed #dce4f0;
+    border-radius: var(--border-radius);
+    padding: 40px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.drag-drop-zone.drag-over {
+    background-color: #f0f8ff;
+    border-color: var(--primary-color);
+}
+
+.upload-icon {
+    font-size: 3.5rem;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+.drag-drop-zone h3 {
+    margin: 0 0 10px 0;
+    font-size: 1.2rem;
+    color: #555;
+}
+
+.drag-drop-zone p {
+    margin: 0 0 15px 0;
+    color: #888;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.custom-file-upload {
+    background-color: #fff;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    display: inline-block;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.custom-file-upload:hover {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+.actions {
+    margin-top: 10px;
+}
+
+.btn-analyze {
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    transition: transform 0.2s, box-shadow 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-analyze:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(74, 144, 226, 0.4);
+}
+
+.btn-analyze i {
+    font-size: 1.2rem;
+}
+
+footer {
+    margin-top: 40px;
+    font-size: 0.9rem;
+    color: #999;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Seção de Carregamento */
+#loading-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 250px;
+}
+
+.spinner {
+    border: 6px solid #f3f3f3;
+    border-top: 6px solid var(--primary-color);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Seção de Resultados */
+.result-content {
+    text-align: left;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.result-content h1, .result-content h2, .result-content h3 {
+    color: var(--primary-color);
+    border-bottom: 2px solid #eee;
+    padding-bottom: 5px;
+    margin-top: 20px;
+}
+
+.result-content ul, .result-content ol {
+    padding-left: 20px;
+}
+
+.result-content strong {
+    font-weight: 600;
+}
+
+.result-content .error {
+    color: #d9534f;
+    background-color: #f2dede;
+    border: 1px solid #ebccd1;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.btn-secondary {
+    background-color: #ccc;
+    color: #333;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s;
+}
+
+.btn-secondary:hover {
+    background-color: #bbb;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .card {
+        padding: 20px;
+    }
+
+    .logo {
+        font-size: 2rem;
+    }
+
+    .card-header h2 {
+        font-size: 1.5rem;
+    }
+}

@@ -3,69 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Currículo IA - Análise Inteligente</title>
+    <title>Currículo IA - Para RH</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/static/css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
-    <div class="main-container">
-        <header>
-            <div class="logo">
-                <i class="fa-solid fa-robot"></i> Currículo<span>IA</span>
+<div class="bg-glow bg-glow-1"></div>
+<div class="bg-glow bg-glow-2"></div>
+
+<div class="main-container">
+    <header>
+        <div class="logo">
+            <i class="fa-solid fa-microchip"></i> Currículo<span class="highlight">.AI</span>
+        </div>
+        <p class="subtitle">Análise Preditiva de Talentos</p>
+    </header>
+
+    <main class="glass-card">
+        <div id="upload-section">
+            <div class="card-header">
+                <h2>Upload de Dados</h2>
+                <p>Carregue o perfil (PDF/DOCX) para processamento neural.</p>
             </div>
-            <p class="subtitle">Assistente de Recrutamento Inteligente</p>
-        </header>
 
-        <main class="card">
-            <div id="upload-section">
-                <div class="card-header">
-                    <h2>Analisar Candidato</h2>
-                    <p>Envie o currículo (PDF ou DOCX) para obter insights instantâneos da IA.</p>
-                </div>
-
-                <form id="upload-form" class="upload-area">
-                    <div class="drag-drop-zone">
-                        <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
-                        <h3 id="upload-text">Arraste e solte o currículo aqui</h3>
-                        <p>ou</p>
-                        <label for="file-upload" class="custom-file-upload">
-                            Escolher Arquivo
-                        </label>
-                        <input id="file-upload" type="file" accept=".pdf,.doc,.docx"/>
+            <form id="upload-form" class="upload-area">
+                <div class="drag-drop-zone" id="drop-zone">
+                    <div class="icon-container">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
                     </div>
+                    <h3 id="upload-text">Arraste o arquivo para a zona de carga</h3>
+                    <p class="support-text">Suporta PDF e DOCX</p>
 
-                    <div class="actions">
-                        <button type="submit" class="btn-analyze">
-                            <i class="fa-solid fa-magnifying-glass-chart"></i> Analisar com IA
-                        </button>
-                    </div>
-                </form>
-            </div>
-
-            <div id="result-section" class="hidden">
-                <div class="card-header">
-                    <h2>Resultado da Análise</h2>
+                    <input id="file-upload" type="file" accept=".pdf,.doc,.docx" hidden/>
+                    <label for="file-upload" class="cyber-button secondary">
+                        <i class="fa-solid fa-folder-open"></i> Explorar Arquivos
+                    </label>
                 </div>
-                <div id="analysis-result" class="result-content">
-                    <!-- O resultado da IA será inserido aqui -->
+
+                <div class="actions">
+                    <button type="submit" class="cyber-button primary">
+                            <span class="btn-content">
+                                <i class="fa-solid fa-bolt"></i> Iniciar Varredura IA
+                            </span>
+                        <div class="btn-glitch"></div>
+                    </button>
                 </div>
-                <button id="back-to-upload" class="btn-secondary">Analisar Outro</button>
+            </form>
+        </div>
+
+        <div id="loading-section" class="hidden">
+            <div class="loader-container">
+                <div class="scanner-line"></div>
+                <div class="loader-circle"></div>
+            </div>
+            <p class="typing-effect">Decodificando competências...</p>
+        </div>
+
+        <div id="result-section" class="hidden">
+            <div class="card-header">
+                <h2><i class="fa-solid fa-square-poll-vertical"></i> Relatório de Análise</h2>
             </div>
 
-            <div id="loading-section" class="hidden">
-                <div class="spinner"></div>
-                <p>Analisando o currículo... Isso pode levar alguns segundos.</p>
+            <div class="terminal-window">
+                <div class="terminal-header">
+                    <span class="dot red"></span>
+                    <span class="dot yellow"></span>
+                    <span class="dot green"></span>
+                    <span class="title">output.log</span>
+                </div>
+                <div id="analysis-result" class="result-content markdown-body">
+                </div>
             </div>
-        </main>
 
-        <footer>
+            <div class="result-actions">
+                <button id="back-to-upload" class="cyber-button secondary">
+                    <i class="fa-solid fa-rotate-left"></i> Nova Análise
+                </button>
+                <button id="download-pdf-btn" class="cyber-button primary">
+                    <i class="fa-solid fa-file-pdf"></i> Baixar PDF
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
             <p>&copy; 2025 Currículo IA. Potencializando o RH.</p>
-        </footer>
-    </div>
+    </footer>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="/static/js/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="/static/js/main.js"></script>
 </body>
 </html>

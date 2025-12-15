@@ -1,30 +1,44 @@
 document.addEventListener('DOMContentLoaded', () => {
+
+    // Referências do DOM
     const uploadForm = document.getElementById('upload-form');
     const fileInput = document.getElementById('file-upload');
     const uploadText = document.getElementById('upload-text');
+    const dropZone = document.getElementById('drop-zone');
     const uploadSection = document.getElementById('upload-section');
     const resultSection = document.getElementById('result-section');
     const loadingSection = document.getElementById('loading-section');
     const analysisResult = document.getElementById('analysis-result');
     const backToUploadBtn = document.getElementById('back-to-upload');
+    const downloadPdfBtn = document.getElementById('download-pdf-btn');
 
     let selectedFile = null;
+    let currentAnalysisText = ''; // Armazena o texto da análise em Markdown
 
+    // Atualiza UI quando arquivo é selecionado
     fileInput.addEventListener('change', (event) => {
-        selectedFile = event.target.files[0];
-        if (selectedFile) {
-            uploadText.textContent = selectedFile.name;
-        }
+        handleFiles(event.target.files);
     });
 
+    // Função para processar arquivo visualmente
+    function handleFiles(files) {
+        if (files.length > 0) {
+            selectedFile = files[0];
+            dropZone.querySelector('.icon-container').innerHTML = '<i class="fa-solid fa-file-circle-check" style="color: #27c93f;"></i>';
+            uploadText.innerHTML = `Arquivo pronto: <span style="color:var(--neon-cyan)">${selectedFile.name}</span>`;
+            dropZone.style.borderColor = '#27c93f';
+        }
+    }
+
+    // Envio do formulário
     uploadForm.addEventListener('submit', async (event) => {
         event.preventDefault();
         if (!selectedFile) {
-            alert('Por favor, selecione um arquivo primeiro.');
+            alert('⚠ PROTOCOLO INTERROMPIDO: Nenhum arquivo detectado.');
             return;
         }
 
-        showLoading();
+        switchSection('loading');
 
         const formData = new FormData();
         formData.append('file', selectedFile);
@@ -38,70 +52,94 @@ document.addEventListener('DOMContentLoaded', () => {
             const result = await response.json();
 
             if (response.ok) {
-                // Usa a biblioteca 'marked' para converter Markdown em HTML
-                analysisResult.innerHTML = marked.parse(result.analise);
-                showResults();
+                currentAnalysisText = result.analise; // Salva o texto original
+                analysisResult.innerHTML = marked.parse(currentAnalysisText); // Renderiza o Markdown
+                switchSection('result');
             } else {
-                analysisResult.innerHTML = `<p class="error"><strong>Erro:</strong> ${result.analise || 'Não foi possível analisar o currículo.'}</p>`;
-                showResults();
+                analysisResult.innerHTML = `<div class="error-msg">❌ ERRO NO SISTEMA: ${result.analise || 'Falha na análise'}</div>`;
+                switchSection('result');
             }
 
         } catch (error) {
-            console.error('Erro na requisição:', error);
-            analysisResult.innerHTML = `<p class="error"><strong>Erro de comunicação com o servidor.</strong> Verifique o console para mais detalhes.</p>`;
-            showResults();
+            console.error('System Error:', error);
+            analysisResult.innerHTML = `<div class="error-msg">❌ FALHA DE CONEXÃO COM O SERVIDOR</div>`;
+            switchSection('result');
         }
     });
 
+    // Botão Voltar
     backToUploadBtn.addEventListener('click', () => {
-        resetToUpload();
+        resetInterface();
     });
 
-    function showLoading() {
+    // Botão Baixar PDF
+    downloadPdfBtn.addEventListener('click', async () => {
+        if (!currentAnalysisText) return;
+
+        try {
+            const response = await fetch('/api/gerar-pdf', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ texto: currentAnalysisText }),
+            });
+
+            if (response.ok) {
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = 'analise_curriculo.pdf';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                a.remove();
+            } else {
+                alert('Erro ao gerar o PDF.');
+            }
+        } catch (error) {
+            console.error('PDF Download Error:', error);
+            alert('Falha na conexão ao tentar gerar o PDF.');
+        }
+    });
+
+    // Função Auxiliar para Troca de Seções
+    function switchSection(sectionName) {
         uploadSection.classList.add('hidden');
+        loadingSection.classList.add('hidden');
         resultSection.classList.add('hidden');
-        loadingSection.classList.remove('hidden');
+
+        if(sectionName === 'loading') loadingSection.classList.remove('hidden');
+        if(sectionName === 'result') resultSection.classList.remove('hidden');
+        if(sectionName === 'upload') uploadSection.classList.remove('hidden');
     }
 
-    function showResults() {
-        loadingSection.classList.add('hidden');
-        uploadSection.classList.add('hidden');
-        resultSection.classList.remove('hidden');
-    }
-
-
-
-    function resetToUpload() {
-        resultSection.classList.add('hidden');
-        loadingSection.classList.add('hidden');
-        uploadSection.classList.remove('hidden');
-
-        uploadText.textContent = 'Arraste e solte o currículo aqui';
+    function resetInterface() {
+        switchSection('upload');
         selectedFile = null;
-        fileInput.value = ''; // Limpa o input de arquivo
+        currentAnalysisText = '';
+        fileInput.value = '';
+        uploadText.textContent = 'Arraste o arquivo para a zona de carga';
+        dropZone.querySelector('.icon-container').innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i>';
+        dropZone.style.borderColor = 'rgba(59, 130, 246, 0.3)';
         analysisResult.innerHTML = '';
     }
 
-    // Funcionalidade de Arrastar e Soltar
-    const dragDropZone = document.querySelector('.drag-drop-zone');
-
-    dragDropZone.addEventListener('dragover', (event) => {
-        event.preventDefault();
-        dragDropZone.classList.add('drag-over');
+    // Drag and Drop Effects
+    dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.classList.add('drag-over');
     });
 
-    dragDropZone.addEventListener('dragleave', () => {
-        dragDropZone.classList.remove('drag-over');
+    dropZone.addEventListener('dragleave', () => {
+        dropZone.classList.remove('drag-over');
     });
 
-    dragDropZone.addEventListener('drop', (event) => {
-        event.preventDefault();
-        dragDropZone.classList.remove('drag-over');
-        const files = event.dataTransfer.files;
-        if (files.length > 0) {
-            fileInput.files = files;
-            selectedFile = files[0];
-            uploadText.textContent = selectedFile.name;
-        }
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('drag-over');
+        handleFiles(e.dataTransfer.files);
     });
 });

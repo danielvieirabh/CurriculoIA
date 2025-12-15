@@ -1,5 +1,7 @@
 package com.example.curriculoia.service;
 
+import com.example.curriculoia.dto.GeminiRequest;
+import com.example.curriculoia.dto.GeminiResponse;
 import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatusCode;
@@ -9,15 +11,12 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
-import java.util.Collections;
-import java.util.Map;
 
 @Service
 public class GeminiService {
 
     private final WebClient webClient;
     private final String apiKey;
-    // Usando um modelo mais recente e estável
     private static final String GEMINI_MODEL = "gemini-2.5-flash";
 
     public GeminiService(WebClient.Builder webClientBuilder, @Value("${app.gemini.api-key}") String apiKey) {
@@ -29,35 +28,25 @@ public class GeminiService {
         try {
             String textoCurriculo = extrairTexto(curriculo);
             String prompt = criarPrompt(textoCurriculo);
-
-            // URL corrigida com o novo modelo
             String url = String.format("/v1beta/models/%s:generateContent?key=%s", GEMINI_MODEL, apiKey);
 
-            Map<String, Object> requestBody = Map.of(
-                "contents", Collections.singletonList(
-                    Map.of("parts", Collections.singletonList(
-                        Map.of("text", prompt)
-                    ))
-                )
-            );
+            GeminiRequest requestBody = new GeminiRequest(prompt);
 
             return webClient.post()
                     .uri(url)
                     .bodyValue(requestBody)
                     .retrieve()
-                    // Adiciona tratamento de erro para status HTTP 4xx e 5xx
                     .onStatus(HttpStatusCode::isError, response ->
                         response.bodyToMono(String.class)
                                 .flatMap(errorBody -> Mono.error(
                                     new RuntimeException("Falha na API do Gemini: " + response.statusCode() + " " + errorBody)
                                 ))
                     )
-                    .bodyToMono(String.class)
-                    .map(this::extrairConteudoDaResposta);
+                    .bodyToMono(GeminiResponse.class)
+                    .map(GeminiResponse::extractText);
 
-        } catch (Exception e) {
-            // Este erro captura falhas na extração de texto, não na chamada da API
-            return Mono.error(new RuntimeException("Erro ao processar o arquivo do currículo.", e));
+        } catch (Exception error) {
+            return Mono.error(new RuntimeException("Erro ao processar o arquivo do currículo.", error));
         }
     }
 
@@ -68,36 +57,18 @@ public class GeminiService {
     }
 
     private String criarPrompt(String textoCurriculo) {
-        return "Aja como um recrutador sênior especialista em análise de currículos. " +
-               "Analise o seguinte currículo e forneça um resumo estruturado com os seguintes tópicos em formato Markdown:\n\n" +
-               "**Resumo Profissional:** Um parágrafo conciso sobre o perfil do candidato.\n" +
-               "**Pontos Fortes:** Uma lista dos principais pontos positivos.\n" +
-               "**Pontos a Melhorar:** Uma lista de pontos que poderiam ser mais bem desenvolvidos ou que estão ausentes.\n" +
-               "**Sugestões de Perguntas para Entrevista:** Uma lista de 3 a 5 perguntas inteligentes para fazer ao candidato com base no currículo dele.\n\n" +
+        return "Aja como um recrutador sênior especialista em análise de currículos, com mais de 20 anos de experiência em tech recruiting. " +
+               "Seja extremamente detalhista e analítico. " +
+               "Analise o seguinte currículo e forneça um relatório completo e aprofundado em formato Markdown, cobrindo os seguintes tópicos:\n\n" +
+               "**Resumo Profissional:** Um parágrafo detalhado sobre o perfil do candidato, suas ambições e adequação ao mercado.\n" +
+               "**Principais Competências Técnicas (Hard Skills):** Uma lista detalhada das tecnologias, linguagens e frameworks que o candidato domina, com nível de proficiência estimado (iniciante, intermediário, avançado) baseado nas informações do currículo.\n" +
+               "**Competências Comportamentais (Soft Skills):** Uma análise das soft skills demonstradas, como comunicação, liderança, proatividade, etc., com exemplos extraídos do currículo.\n" +
+               "**Pontos Fortes:** Uma lista clara e objetiva dos principais diferenciais do candidato.\n" +
+               "**Pontos a Melhorar e Recomendações:** Uma lista construtiva de áreas onde o candidato pode melhorar, incluindo sugestões de cursos, certificações ou experiências.\n" +
+               "**Potencial de Carreira:** Uma avaliação sobre o potencial de crescimento do candidato e em quais tipos de função ou empresa ele se encaixaria melhor.\n" +
+               "**Sugestões de Perguntas para Entrevista:** Uma lista de 5 a 7 perguntas técnicas e comportamentais perspicazes para aprofundar a avaliação do candidato.\n\n" +
                "---\n\n" +
                "**Currículo para Análise:**\n" +
                textoCurriculo;
-    }
-    
-    private String extrairConteudoDaResposta(String jsonResponse) {
-        try {
-            int textIndex = jsonResponse.indexOf("\"text\": \"");
-            if (textIndex != -1) {
-                String start = jsonResponse.substring(textIndex + 9);
-                int endIndex = start.indexOf("\"");
-                if (endIndex != -1) {
-                    return start.substring(0, endIndex)
-                                .replace("\\n", "\n")
-                                .replace("\\\"", "\"");
-                }
-            }
-            // Se a extração falhar, pode ser uma resposta de erro do Gemini
-            if (jsonResponse.contains("\"error\"")) {
-                return "A API do Gemini retornou um erro: " + jsonResponse;
-            }
-            return "Não foi possível extrair a análise da resposta da IA. Resposta recebida: " + jsonResponse;
-        } catch (Exception e) {
-            return "Erro ao processar a resposta da IA: " + e.getMessage();
-        }
     }
 }

@@ -27,6 +27,16 @@ dependencies {
     implementation 'org.apache.tika:tika-parsers-standard-package:2.9.2'
     implementation 'org.apache.tika:tika-parser-pdf-module:2.9.1'
     implementation 'org.apache.tika:tika-parser-microsoft-module:2.9.1'
+
+    // Dependências para geração de PDF
+    // Biblioteca para converter Markdown para HTML
+    implementation 'org.commonmark:commonmark:0.22.0'
+
+    // Biblioteca para converter HTML para PDF
+    implementation 'com.openhtmltopdf:openhtmltopdf-pdfbox:1.0.10'
+
+    // Opcional: Para suporte a imagens SVG ou Logging, se precisar no futuro
+    implementation 'com.openhtmltopdf:openhtmltopdf-slf4j:1.0.10'
 }
 
 tasks.named('test') {

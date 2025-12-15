@@ -8,7 +8,8 @@ public class AnaliseCurriculoResponse {
     }
 
     public String getAnalise() {
-        return analise;
+
+        return this.analise;
     }
 
     public void setAnalise(String analise) {

@@ -14,15 +14,21 @@ public class GeminiResponse {
     }
 
     public String extractText() {
-        if (candidates != null && !candidates.isEmpty()) {
-            Candidate firstCandidate = candidates.get(0);
-            if (firstCandidate != null && firstCandidate.getContent() != null) {
-                Content content = firstCandidate.getContent();
-                if (content.getParts() != null && !content.getParts().isEmpty()) {
-                    return content.getParts().get(0).getText();
-                }
-            }
+        if (candidates == null || candidates.isEmpty()) {
+            return "Não foi possível extrair a análise da resposta da IA.";
         }
-        return "Não foi possível extrair a análise da resposta da IA.";
+
+        Candidate candidato = candidates.get(0);
+        if (candidato == null || candidato.getContent() == null) {
+            return "Não foi possível extrair a análise da resposta da IA.";
+        }
+
+        Content content = candidato.getContent();
+        if (content.getParts() == null || content.getParts().isEmpty()) {
+            return "Não foi possível extrair a análise da resposta da IA.";
+        }
+
+        // fica limpo no final
+        return content.getParts().get(0).getText();
     }
 }

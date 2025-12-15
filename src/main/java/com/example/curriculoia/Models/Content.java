@@ -1,4 +1,4 @@
-package com.example.curriculoia.dto;
+package com.example.curriculoia.Models;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ public class Content {
     }
 
     public List<Part> getParts() {
-        return parts;
+        return this.parts;
     }
 
     public void setParts(List<Part> parts) {

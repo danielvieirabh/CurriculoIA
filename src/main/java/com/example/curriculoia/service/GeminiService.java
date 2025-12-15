@@ -1,7 +1,7 @@
 package com.example.curriculoia.service;
 
-import com.example.curriculoia.dto.GeminiRequest;
-import com.example.curriculoia.dto.GeminiResponse;
+import com.example.curriculoia.Models.GeminiRequest;
+import com.example.curriculoia.Models.GeminiResponse;
 import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatusCode;
@@ -63,10 +63,11 @@ public class GeminiService {
                "**Resumo Profissional:** Um parágrafo detalhado sobre o perfil do candidato, suas ambições e adequação ao mercado.\n" +
                "**Principais Competências Técnicas (Hard Skills):** Uma lista detalhada das tecnologias, linguagens e frameworks que o candidato domina, com nível de proficiência estimado (iniciante, intermediário, avançado) baseado nas informações do currículo.\n" +
                "**Competências Comportamentais (Soft Skills):** Uma análise das soft skills demonstradas, como comunicação, liderança, proatividade, etc., com exemplos extraídos do currículo.\n" +
-               "**Pontos Fortes:** Uma lista clara e objetiva dos principais diferenciais do candidato.\n" +
-               "**Pontos a Melhorar e Recomendações:** Uma lista construtiva de áreas onde o candidato pode melhorar, incluindo sugestões de cursos, certificações ou experiências.\n" +
+               "** Resumo Pontos Fortes:** Uma lista clara e objetiva dos principais diferenciais do candidato.\n" +
+               "**Resumo Pontos a Melhorar e Recomendações:** Uma lista construtiva de áreas onde o candidato pode melhorar, incluindo sugestões de cursos, certificações ou experiências.\n" +
                "**Potencial de Carreira:** Uma avaliação sobre o potencial de crescimento do candidato e em quais tipos de função ou empresa ele se encaixaria melhor.\n" +
                "**Sugestões de Perguntas para Entrevista:** Uma lista de 5 a 7 perguntas técnicas e comportamentais perspicazes para aprofundar a avaliação do candidato.\n\n" +
+                "**Para lembrar que a gente esta no ano de 2025 ok , estamos em dezembro de 2025 e daqui a pouco vamos para 2026 (ESTEJA ATUALIZADO)\n" +
                "---\n\n" +
                "**Currículo para Análise:**\n" +
                textoCurriculo;

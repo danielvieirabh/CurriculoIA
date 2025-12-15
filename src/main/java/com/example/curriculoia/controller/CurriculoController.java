@@ -1,7 +1,7 @@
 package com.example.curriculoia.controller;
 
-import com.example.curriculoia.dto.AnaliseCurriculoResponse;
-import com.example.curriculoia.dto.PdfRequest;
+import com.example.curriculoia.Models.AnaliseCurriculoResponse;
+import com.example.curriculoia.Models.PdfRequest;
 import com.example.curriculoia.service.GeminiService;
 import com.example.curriculoia.service.PdfService;
 import org.springframework.http.HttpHeaders;

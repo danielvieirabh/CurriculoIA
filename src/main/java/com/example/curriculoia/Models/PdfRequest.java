@@ -1,4 +1,4 @@
-package com.example.curriculoia.dto;
+package com.example.curriculoia.Models;
 
 public class PdfRequest {
     private String texto;

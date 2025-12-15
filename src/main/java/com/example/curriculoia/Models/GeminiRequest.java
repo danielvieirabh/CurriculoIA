@@ -10,7 +10,7 @@ public class GeminiRequest {
     }
 
     public List<Content> getContents() {
-        return contents;
+        return this.contents;
     }
 
     public void setContents(List<Content> contents) {

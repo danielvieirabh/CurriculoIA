@@ -8,7 +8,7 @@ public class Part {
     }
 
     public String getText() {
-        return text;
+        return this.text;
     }
 
     public void setText(String text) {

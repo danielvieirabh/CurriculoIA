@@ -4,7 +4,7 @@ public class PdfRequest {
     private String texto;
 
     public String getTexto() {
-        return texto;
+        return this.texto;
     }
 
     public void setTexto(String texto) {

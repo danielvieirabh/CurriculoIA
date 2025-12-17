@@ -14,18 +14,21 @@ public class GeminiResponse {
     }
 
     public String extractText() {
+
+        String mensagemErro = "Não foi possível extrair a análise da resposta da IA.";
+
         if (candidates == null || candidates.isEmpty()) {
-            return "Não foi possível extrair a análise da resposta da IA.";
+            return mensagemErro;
         }
 
         Candidate candidato = candidates.get(0);
         if (candidato == null || candidato.getContent() == null) {
-            return "Não foi possível extrair a análise da resposta da IA.";
+            return mensagemErro;
         }
 
         Content content = candidato.getContent();
         if (content.getParts() == null || content.getParts().isEmpty()) {
-            return "Não foi possível extrair a análise da resposta da IA.";
+            return mensagemErro;
         }
 
         // fica limpo no final
